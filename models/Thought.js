@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose');
 const userSchema = require('./User');
+const dateFormat = require('../utils/dateFormat');
 
 //Schema to create Thought model
 const thoughtSchema = new Schema(
