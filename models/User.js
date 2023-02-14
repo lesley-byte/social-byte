@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 const thoughtSchema = require("./Thought");
 
-//Schema to create User model
+//Schema to create User model, username and email are not immutable
 const userSchema = new Schema(
   {
     username: {
@@ -27,7 +27,6 @@ const userSchema = new Schema(
         // needs to be an array of _id values referencing the User model
         type: Schema.Types.ObjectId,
         ref: "User",
-        
       },
     ],
   },

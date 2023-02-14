@@ -65,13 +65,21 @@ module.exports = {
       .catch((err) => res.status(400).json(err));
   },
   updateUser(req, res) {
-    User.findOneAndUpdate({ _id: req.params.userId })
+    User.findOneAndUpdate(
+      { _id: req.params.userId },
+      { $set: req.body },
+      { runValidators: true, new: true }
+    )
       .then((user) =>
         !user
           ? res.status(404).json({ message: "No user found with this id!" })
           : res.json(user)
       )
-      .catch((err) => res.status(400).json(err));
+      .catch((err) => {
+        res.status(400).json(err);
+        console.log(err);
+      }
+        );
   },
   addThought(req, res) {
     console.log("You are adding a thought!");
