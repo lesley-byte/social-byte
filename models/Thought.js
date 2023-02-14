@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-const reactionSchema = require('./Reaction');
 const userSchema = require('./User');
 
 //Schema to create Thought model
@@ -20,7 +19,29 @@ const thoughtSchema = new Schema(
             type: String,
             required: 'Username is required'
         },
-        reactions: [reactionSchema]
+        // reaction will be a subdocument in the Thought model
+        reactions: [
+            {
+                reactionId: {
+                    type: Schema.Types.ObjectId,
+                    default: () => new Types.ObjectId()
+                },
+                reactionBody: {
+                    type: String,
+                    required: 'Reaction is required',
+                    maxlength: 280
+                },
+                username: {
+                    type: String,
+                    required: 'Username is required'
+                },
+                createdAt: {
+                    type: Date,
+                    default: Date.now,
+                    get: createdAtVal => dateFormat(createdAtVal)
+                }
+            }
+        ]
     },
     {
         toJSON: {
