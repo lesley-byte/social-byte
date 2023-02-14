@@ -2,8 +2,8 @@ const connection = require("../config/connection");
 const { User, Thought } = require("../models");
 const {
   getRandomName,
-  getRandomThoughtDescription,
-  getRandomReactionDescription,
+  getRandomThoughtDescription, // need to use this function to get a random thought description
+  getRandomReactionDescription, // need to use this function to get a random reaction description
 } = require("./data");
 
 connection.on("error", (err) => console.log(err));
@@ -12,7 +12,9 @@ connection.once("open", async () => {
   console.log("Connected to MongoDB");
 
   await User.deleteMany({});
+  console.log("Users deleted! 🗑️")
   await Thought.deleteMany({});
+  console.log("Thoughts deleted! 🗑️")
 
   let users = [];
 
@@ -22,8 +24,10 @@ connection.once("open", async () => {
     const password = "password123";
     users.push({ username, email, password });
   }
+  console.log("Users created! 🧑‍🤝‍🧑")
 
   await User.collection.insertMany(users);
+  console.log("Users inserted! 🧑‍🤝‍🧑")
 
   await Thought.collection.insertOne({
     thoughtText: "This is a test thought",
@@ -38,7 +42,7 @@ connection.once("open", async () => {
       },
     ],
   });
-
+  console.log("Thought inserted! 🧠")
   console.table(users);
   console.info("Seeding complete! 🌱");
   process.exit(0);
