@@ -1,0 +1,31 @@
+{
+  "name": "social-byte",
+  "version": "1.0.0",
+  "description": "A social network api with Express, MongoDB, Mongoose ODM, tested in Insomnia",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index",
+    "dev": "nodemon index",
+    "seed": "node utils/seed",
+    "heroku-postbuild": "node utils/seed.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lesley-byte/social-byte.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lesley-byte/social-byte/issues"
+  },
+  "homepage": "https://github.com/lesley-byte/social-byte#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^6.9.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
