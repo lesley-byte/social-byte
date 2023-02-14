@@ -16,8 +16,18 @@ const userSchema = new Schema(
             unique: true,
             match: [/.+@.+\..+/, 'Please enter a valid e-mail address']
         },
-        thoughts: [thoughtSchema],
-        friends: [this]
+        thoughts: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Thought'
+            }
+        ],
+        friends: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'User'
+            }
+        ]
     },
     {
         toJSON: {
@@ -38,3 +48,4 @@ const User = model('User', userSchema);
 
 // export the User model
 module.exports = User;
+
