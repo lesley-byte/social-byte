@@ -83,6 +83,30 @@ module.exports = {
       )
       .catch((err) => res.status(400).json(err));
   },
+
+  // get all reactions
+  getAllReactions(req, res) {
+    Thought.findOne({ _id: req.params.thoughtId })
+      .select("-__v")
+      .then((thought) =>
+        !thought
+          ? res.status(404).json({ message: "No thought found with this id!" })
+          : res.json(thought.reactions)
+      )
+      .catch((err) => res.status(400).json(err));
+  },
+  // get one reaction by id
+  getReactionById(req, res) {
+    Thought.findOne({ _id: req.params.thoughtId })
+      .select("-__v")
+      .then((thought) =>
+        !thought
+          ? res.status(404).json({ message: "No thought found with this id!" })
+          : res.json(thought.reactions.id(req.params.reactionId))
+      )
+      .catch((err) => res.status(400).json(err));
+  },
+
   // create reaction
   createReaction(req, res) {
     Thought.findOneAndUpdate(

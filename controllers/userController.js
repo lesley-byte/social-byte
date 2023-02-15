@@ -109,6 +109,37 @@ module.exports = {
       )
       .catch((err) => res.status(400).json(err));
   },
+getAllFriends(req, res) {
+    User.findOne({ _id: req.params.userId })
+      .select("-__v")
+      .populate({
+        path: "friends",
+        select: "-__v",
+      })
+      .then((user) =>
+        !user
+          ? res.status(404).json({ message: "No user found with this id!" })
+          : res.json(user)
+      )
+      .catch((err) => res.status(400).json(err));
+  },
+    getFriendById(req, res) {
+    User.findOne({ _id: req.params.userId })
+      .select("-__v")
+      .populate({
+        path: "friends",
+        select: "-__v",
+        match: { _id: req.params.friendId },
+      })
+      .then((user) =>
+        !user
+          ? res.status(404).json({ message: "No user found with this id!" })  
+          : res.json(user)
+      )
+      .catch((err) => res.status(400).json(err));
+  },
+  
+
   createFriend(req, res) {
     console.log("You are adding a friend!");
     console.log(req.body);
