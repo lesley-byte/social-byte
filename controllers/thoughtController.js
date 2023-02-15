@@ -109,12 +109,15 @@ module.exports = {
   },
   // get one reaction by thoughtId where reactionId is the _id of the reaction
   getReactionById(req, res) {
-    Thought.findOne({ _id: req.params.thoughtId })
+    Thought.find(
+      { _id: req.params.thoughtId },
+      { "reactions._id": req.params.reactionId }
+      )
       .select("-__v")
       .then((thought) =>
         !thought
           ? res.status(404).json({ message: "No thought found with this id!" })
-          : res.json(thought.reactions.id(req.params.reactionId))
+          : res.json(thought)
       )
       .catch((err) => {
         console.log(err);
