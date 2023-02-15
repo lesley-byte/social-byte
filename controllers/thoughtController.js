@@ -107,7 +107,7 @@ module.exports = {
         res.status(400).json(err);
       });
   },
-  // get one reaction by id
+  // get one reaction by thoughtId where reactionId is the _id of the reaction
   getReactionById(req, res) {
     Thought.findOne({ _id: req.params.thoughtId })
       .select("-__v")
@@ -121,6 +121,8 @@ module.exports = {
         res.status(400).json(err);
       });
   },
+
+
 
   // create reaction
   createReaction(req, res) {
@@ -141,9 +143,11 @@ module.exports = {
   },
   // delete reaction
   deleteReaction(req, res) {
+    console.log(req.params.reactionId)
+    console.log(req.params.thoughtId)
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
-      { $pull: { reactions: { reactionId: req.params.reactionId } } },
+      { $pull: { reactions: { _id: req.params.reactionId } } },
       { runValidators: true, new: true }
     )
       .then((thought) =>
@@ -153,7 +157,7 @@ module.exports = {
       )
       .catch((err) => {
         console.log(err);
-        res.status(400).json(err);
+        res.status(500).json(err);
       });
   },
 };

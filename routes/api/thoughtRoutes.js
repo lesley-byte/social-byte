@@ -25,12 +25,14 @@ router
 router.route("/:thoughtId/reactions").get(getAllReactions);
 
 // /api/thoughts/:thoughtId/reactions/:reactionId
-router.route("/:thoughtId/reactions/:reactionId").get(getReactionById);
+router
+  .route("/:thoughtId/reactions/:reactionId")
+  .get(getReactionById)
+  .delete(deleteReaction);
 
 // /api/thoughts/:thoughtId/reactions
 router
-  .route("/:thoughtId/reactions")
-  .post(createReaction)
-  .delete(deleteReaction);
+.route("/:thoughtId/reactions")
+.post(createReaction);
 
 module.exports = router;

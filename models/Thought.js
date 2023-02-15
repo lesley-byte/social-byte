@@ -2,6 +2,37 @@ const { Schema, model, Types } = require('mongoose');
 const userSchema = require('./User');
 const dateFormat = require('../utils/dateFormat');
 
+
+// Schema to create Reaction model
+const reactionSchema = new Schema(
+    {
+        // set custom id to avoid confusion with parent thought _id
+        // reactionId: {
+        //     type: Schema.Types.ObjectId,
+        //     default: () => new Types.ObjectId()
+        // },
+        reactionBody: {
+            type: String,
+            required: 'Reaction is required',
+            maxlength: 280
+        },
+        username: {
+            type: String,
+            required: 'Username is required'
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now,
+            get: createdAtVal => dateFormat(createdAtVal)
+        }
+    },
+    {
+        toJSON: {
+            getters: true
+        }
+    }
+);
+
 //Schema to create Thought model
 const thoughtSchema = new Schema(
     {
@@ -21,28 +52,7 @@ const thoughtSchema = new Schema(
             required: 'Username is required'
         },
         // reaction will be a subdocument in the Thought model
-        reactions: [
-            {
-                reactionId: {
-                    type: Schema.Types.ObjectId,
-                    default: () => new Types.ObjectId()
-                },
-                reactionBody: {
-                    type: String,
-                    required: 'Reaction is required',
-                    maxlength: 280
-                },
-                username: {
-                    type: String,
-                    required: 'Username is required'
-                },
-                createdAt: {
-                    type: Date,
-                    default: Date.now,
-                    get: createdAtVal => dateFormat(createdAtVal)
-                }
-            }
-        ]
+        reactions: [reactionSchema]
     },
     {
         toJSON: {

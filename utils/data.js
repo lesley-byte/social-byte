@@ -80,8 +80,12 @@ const getRandomReactionDescription = (int) => {
   return description;
 };
 
+const getRandomUser = (users) => getRandomArrItem(users);
+
 module.exports = {
   getRandomName,
   getRandomThoughtDescription,
   getRandomReactionDescription,
+  getRandomUser,
+  getRandomArrItem,
 };
