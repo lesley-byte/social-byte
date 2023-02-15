@@ -53,7 +53,10 @@ module.exports = {
   createUser(req, res) {
     User.create(req.body)
       .then((user) => res.json(user))
-      .catch((err) => res.status(400).json(err));
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   },
   deleteUser(req, res) {
     User.findOneAndRemove({ _id: req.params.userId })
@@ -62,7 +65,10 @@ module.exports = {
           ? res.status(404).json({ message: "No user found with this id!" })
           : res.json(user)
       )
-      .catch((err) => res.status(400).json(err));
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   },
   updateUser(req, res) {
     User.findOneAndUpdate(
@@ -78,8 +84,7 @@ module.exports = {
       .catch((err) => {
         res.status(400).json(err);
         console.log(err);
-      }
-        );
+      });
   },
   addThought(req, res) {
     console.log("You are adding a thought!");
@@ -94,7 +99,10 @@ module.exports = {
           ? res.status(404).json({ message: "No user found with this id!" })
           : res.json(user)
       )
-      .catch((err) => res.status(400).json(err));
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   },
   removeThought(req, res) {
     User.findOneAndUpdate(
@@ -107,9 +115,12 @@ module.exports = {
           ? res.status(404).json({ message: "No user found with this id!" })
           : res.json(user)
       )
-      .catch((err) => res.status(400).json(err));
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   },
-getAllFriends(req, res) {
+  getAllFriends(req, res) {
     User.findOne({ _id: req.params.userId })
       .select("-__v")
       .populate({
@@ -121,9 +132,12 @@ getAllFriends(req, res) {
           ? res.status(404).json({ message: "No user found with this id!" })
           : res.json(user)
       )
-      .catch((err) => res.status(400).json(err));
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   },
-    getFriendById(req, res) {
+  getFriendById(req, res) {
     User.findOne({ _id: req.params.userId })
       .select("-__v")
       .populate({
@@ -133,12 +147,14 @@ getAllFriends(req, res) {
       })
       .then((user) =>
         !user
-          ? res.status(404).json({ message: "No user found with this id!" })  
+          ? res.status(404).json({ message: "No user found with this id!" })
           : res.json(user)
       )
-      .catch((err) => res.status(400).json(err));
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   },
-  
 
   createFriend(req, res) {
     console.log("You are adding a friend!");
@@ -153,7 +169,10 @@ getAllFriends(req, res) {
           ? res.status(404).json({ message: "No user found with this id!" })
           : res.json(user)
       )
-      .catch((err) => res.status(400).json(err));
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   },
   deleteFriend(req, res) {
     User.findOneAndUpdate(
@@ -166,7 +185,10 @@ getAllFriends(req, res) {
           ? res.status(404).json({ message: "No user found with this id!" })
           : res.json(user)
       )
-      .catch((err) => res.status(400).json(err));
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   },
 };
 

@@ -57,7 +57,10 @@ module.exports = {
   createThought(req, res) {
     Thought.create(req.body)
       .then((thought) => res.json(thought))
-      .catch((err) => res.status(400).json(err));
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   },
   // update thought by id
   updateThought(req, res) {
@@ -71,7 +74,10 @@ module.exports = {
           ? res.status(404).json({ message: "No thought found with this id!" })
           : res.json(thought)
       )
-      .catch((err) => res.status(400).json(err));
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   },
   // delete thought by id
   deleteThought(req, res) {
@@ -81,7 +87,10 @@ module.exports = {
           ? res.status(404).json({ message: "No thought found with this id!" })
           : res.json(thought)
       )
-      .catch((err) => res.status(400).json(err));
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   },
 
   // get all reactions
@@ -93,7 +102,10 @@ module.exports = {
           ? res.status(404).json({ message: "No thought found with this id!" })
           : res.json(thought.reactions)
       )
-      .catch((err) => res.status(400).json(err));
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   },
   // get one reaction by id
   getReactionById(req, res) {
@@ -104,7 +116,10 @@ module.exports = {
           ? res.status(404).json({ message: "No thought found with this id!" })
           : res.json(thought.reactions.id(req.params.reactionId))
       )
-      .catch((err) => res.status(400).json(err));
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   },
 
   // create reaction
@@ -119,7 +134,10 @@ module.exports = {
           ? res.status(404).json({ message: "No thought found with this id!" })
           : res.json(thought)
       )
-      .catch((err) => res.status(400).json(err));
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   },
   // delete reaction
   deleteReaction(req, res) {
@@ -133,6 +151,9 @@ module.exports = {
           ? res.status(404).json({ message: "No thought found with this id!" })
           : res.json(thought)
       )
-      .catch((err) => res.status(400).json(err));
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   },
 };
