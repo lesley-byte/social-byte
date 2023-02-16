@@ -16,15 +16,25 @@ const friendCount = async () =>
   User.aggregate()
     .unwind("friends")
     .group({ _id: null, friendCount: { $sum: 1 } })
-    .then((numberofFriends) => numberofFriends);
+    .then((numberofFriends) => numberofFriends)
+    .catch((err) => {
+      console.log(err);
+      res.status(400).json(err);
+    });
+    
 // TODO: finish this
 module.exports = {
   getAllUsers(req, res) {
     User.find({})
       .then(async (users) => {
+        console.log(users);
+        // for all users console.log the _id: new ObjectId and username
+        users.forEach((user) => {
+// use ObjectId to convert the _id to a string
+          console.log(`_id: ${new ObjectId(user._id)}, username: ${user.username}`);
+        });
         const userObj = {
           users,
-          userCount: await userCount(),
         };
         res.json(userObj);
       })

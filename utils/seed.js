@@ -1,10 +1,10 @@
 const connection = require("../config/connection");
+const { ObjectId } = require('mongoose').Types;
 const { User, Thought } = require("../models");
 const {
   getRandomName,
   getRandomThoughtDescription, // need to use this function to get a random thought description
   getRandomReactionDescription, // need to use this function to get a random reaction description
-  getRandomUser, // need to use this function to get a random user
   getRandomArrItem, // need to use this function to get a random item from an array
 } = require("./data");
 
@@ -24,7 +24,27 @@ connection.once("open", async () => {
     const username = getRandomName();
     const email = `${username.toLowerCase().split(" ").join("")}@gmail.com`;
     const password = "password123";
-    users.push({ username, email, password });
+    let friends = [];
+    for (let i = 0; i < 4; i++) {
+      try {
+      // get a random user object from users array and use ObjectID to convert the _id to a string
+        let friend = await getRandomArrItem(users);
+        // console.log(friend);
+          // use ObjectId to convert the _id to a string
+          console.log(`_id: ${new ObjectId(friend._id)}, username: ${friend.username}`);
+          // change friend to new ObjectId(friend._id)
+          friend = new ObjectId(friend._id);
+        // if friend not already in friends array, add it
+          if (!friends.includes(friend)) {
+          friends.push(friend);
+        } else {
+          console.log("No friends found! 🤷‍♀️")
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    users.push({ username, email, password, friends });
   }
   console.log("Users created! 🧑‍🤝‍🧑")
 

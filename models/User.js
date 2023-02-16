@@ -24,7 +24,7 @@ const userSchema = new Schema(
     ],
     friends: [
       {
-        // needs to be an array of _id values referencing the User model
+        // needs to be an array of the user ids that have already been created
         type: Schema.Types.ObjectId,
         ref: "User",
       },
@@ -39,13 +39,18 @@ const userSchema = new Schema(
   }
 );
 
-// get total count of friends on retrieval
-userSchema.virtual("friendCount").get(function () {
-  return this.friends.length;
-});
 
 // create the User model using the UserSchema
 const User = model("User", userSchema);
+
+// get total count of friends array on retrieval
+userSchema.virtual("friendCount").get(function () {
+  return this.friends.length;
+});
+// // get total count of users on retrieval
+// userSchema.virtual("userCount").get(function () {
+//   return this.users.length;
+// });
 
 // export the User model
 module.exports = User;
