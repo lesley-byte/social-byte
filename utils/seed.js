@@ -29,10 +29,6 @@ connection.once("open", async () => {
       try {
       // get a random user object from users array and use ObjectID to convert the _id to a string
         let friend = await getRandomArrItem(users);
-        // console.log(friend);
-          // use ObjectId to convert the _id to a string
-          console.log(`_id: ${new ObjectId(friend._id)}, username: ${friend.username}`);
-          // change friend to new ObjectId(friend._id)
           friend = new ObjectId(friend._id);
         // if friend not already in friends array, add it
           if (!friends.includes(friend)) {

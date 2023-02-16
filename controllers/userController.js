@@ -12,15 +12,15 @@ const thoughtCount = async () =>
     .count("thoughtCount")
     .then((numberofThoughts) => numberofThoughts);
 
-const friendCount = async () =>
-  User.aggregate()
-    .unwind("friends")
-    .group({ _id: null, friendCount: { $sum: 1 } })
-    .then((numberofFriends) => numberofFriends)
-    .catch((err) => {
-      console.log(err);
-      res.status(400).json(err);
-    });
+// const friendCount = async () =>
+//   User.aggregate()
+//     .unwind("friends")
+//     .group({ _id: null, friendCount: { $sum: 1 } })
+//     .then((numberofFriends) => numberofFriends)
+//     .catch((err) => {
+//       console.log(err);
+//       res.status(400).json(err);
+//     });
     
 // TODO: finish this
 module.exports = {
@@ -51,8 +51,8 @@ module.exports = {
           ? res.status(404).json({ message: "No user found with this id!" })
           : res.json({
               user,
-              friendCount: await friendCount(req.params.userId),
-              thoughtCount: await thoughtCount(req.params.userId),
+              // friendCount: await friendCount(req.params.userId),
+              // thoughtCount: await thoughtCount(req.params.userId),
             })
       )
       .catch((err) => {

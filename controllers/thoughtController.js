@@ -13,11 +13,11 @@ const thoughtCount = async () =>
     .count("thoughtCount")
     .then((numberofThoughts) => numberofThoughts);
 
-const friendCount = async () =>
-  User.aggregate()
-    .unwind("friends")
-    .group({ _id: null, friendCount: { $sum: 1 } })
-    .then((numberofFriends) => numberofFriends);
+// const friendCount = async () =>
+//   User.aggregate()
+//     .unwind("friends")
+//     .group({ _id: null, friendCount: { $sum: 1 } })
+//     .then((numberofFriends) => numberofFriends);
 
 module.exports = {
   // get all thoughts
@@ -44,8 +44,8 @@ module.exports = {
           ? res.status(404).json({ message: "No thought found with this id!" })
           : res.json({
               thought,
-              friendCount: await friendCount(req.params.thoughtId),
-              thoughtCount: await thoughtCount(req.params.thoughtId),
+              // friendCount: await friendCount(req.params.thoughtId),
+              // thoughtCount: await thoughtCount(req.params.thoughtId),
             })
       )
       .catch((err) => {
