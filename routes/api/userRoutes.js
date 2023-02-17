@@ -27,15 +27,12 @@ router.route("/:userId/thoughts").post(addThought);
 router.route("/:userId/thoughts/:thoughtId").delete(removeThought);
 
 // /api/users/:userId/friends
-router.route("/:userId/friends").get(getAllFriends);
-
-// /api/users/:userId/friends/:friendId
-router.route("/:userId/friends/:friendId").get(getFriendById);
+router.route("/:userId/friends").get(getAllFriends).post(createFriend);
 
 // /api/users/:userId/friends/:friendId
 router
   .route("/:userId/friends/:friendId")
-  .post(createFriend)
+  .get(getFriendById)
   .delete(deleteFriend);
 
 module.exports = router;

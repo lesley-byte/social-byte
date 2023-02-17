@@ -2,10 +2,10 @@ const { ObjectId } = require("mongoose").Types;
 const { Thought, User } = require("../models");
 
 //Aggregate function to get the number of users overall
-const userCount = async () =>
-  User.aggregate()
-    .count("userCount")
-    .then((numberofUsers) => numberofUsers);
+// const userCount = async () =>
+//   User.aggregate()
+//     .count("userCount")
+//     .then((numberofUsers) => numberofUsers);
 
 const thoughtCount = async () =>
   Thought.aggregate()
@@ -25,7 +25,7 @@ const thoughtCount = async () =>
 // TODO: finish this
 module.exports = {
   getAllUsers(req, res) {
-    User.find({})
+    User.find({})  // find all users
       .then(async (users) => {
         console.log(users);
         // for all users console.log the _id: new ObjectId and username
@@ -44,11 +44,11 @@ module.exports = {
       });
   },
   getUserById(req, res) {
-    User.findOne({ _id: req.params.userId })
+    User.findOne({ _id: req.params.userId })  // find one user by id
       .select("-__v")
       .then(async (user) =>
         !user
-          ? res.status(404).json({ message: "No user found with this id!" })
+          ? res.status(404).json({"error" : err.name + ": " + err.message})
           : res.json({
               user,
               // friendCount: await friendCount(req.params.userId),
@@ -69,30 +69,31 @@ module.exports = {
       });
   },
   deleteUser(req, res) {
-    User.findOneAndRemove({ _id: req.params.userId })
+    User.findOneAndRemove({ _id: req.params.userId }) // find one user by id and remove
       .then((user) =>
         !user
-          ? res.status(404).json({ message: "No user found with this id!" })
-          : res.json(user)
+          ? res.status(404).json({"error" : err.name + ": " + err.message})
+          : Thought.deleteMany({ _id: { $in: user.thoughts } })
       )
+      .then(() => res.json({ message: "User deleted!" }))
       .catch((err) => {
         console.log(err);
-        res.status(400).json(err);
+        res.status(500).json(err);
       });
   },
   updateUser(req, res) {
     User.findOneAndUpdate(
-      { _id: req.params.userId },
-      { $set: req.body },
-      { runValidators: true, new: true }
+      { _id: req.params.userId },  // find one user by id
+      { $set: req.body }, // set the body of the request
+      { runValidators: true, new: true }  // run validators and return the new user
     )
       .then((user) =>
         !user
-          ? res.status(404).json({ message: "No user found with this id!" })
+          ? res.status(404).json({"error" : err.name + ": " + err.message})
           : res.json(user)
       )
       .catch((err) => {
-        res.status(400).json(err);
+        res.status(400).json({"error" : err.name + ": " + err.message});
         console.log(err);
       });
   },
@@ -100,13 +101,13 @@ module.exports = {
     console.log("You are adding a thought!");
     console.log(req.body);
     User.findOneAndUpdate(
-      { _id: req.params.userId },
-      { $addToSet: { thoughts: req.body } },
-      { runValidators: true, new: true }
+      { _id: req.params.userId }, // find one user by id
+      { $addToSet: { thoughts: req.body } },  // add the body of the request to the thoughts array
+      { runValidators: true, new: true } // run validators and return the new user
     )
       .then((user) =>
         !user
-          ? res.status(404).json({ message: "No user found with this id!" })
+          ? res.status(404).json({"error" : err.name + ": " + err.message})
           : res.json(user)
       )
       .catch((err) => {
@@ -116,30 +117,32 @@ module.exports = {
   },
   removeThought(req, res) {
     User.findOneAndUpdate(
-      { _id: req.params.userId },
-      { $pull: { thoughts: { _id: req.params.thoughtId } } },
-      { runValidators: true, new: true }
+      { _id: req.params.userId }, // find one user by id
+      { $pull: { thoughts: { _id: req.params.thoughtId } } }, // pull the thought by id from the thoughts array
+      { runValidators: true, new: true } // run validators and return the new user
     )
       .then((user) =>
         !user
-          ? res.status(404).json({ message: "No user found with this id!" })
+          ? res.status(404).json({"error" : err.name + ": " + err.message})
           : res.json(user)
       )
       .catch((err) => {
         console.log(err);
-        res.status(400).json(err);
+        res.status(400).json({"error" : err.name + ": " + err.message});
       });
   },
   getAllFriends(req, res) {
-    User.findOne({ _id: req.params.userId })
+    User.findOne({ _id: req.params.userId }) // find one user by id... is this the right way 🤨
       .select("-__v")
       .populate({
         path: "friends",
         select: "-__v",
       })
+      // ? res.status(404).json({ message: "No user found with this id!" })
+      // : Thought.deleteMany({ _id: { $in: user.thoughts } })
       .then((user) =>
         !user
-          ? res.status(404).json({ message: "No user found with this id!" })
+          ? res.status(404).json({"error" : err.name + ": " + err.message})
           : res.json(user)
       )
       .catch((err) => {
@@ -148,16 +151,16 @@ module.exports = {
       });
   },
   getFriendById(req, res) {
-    User.findOne({ _id: req.params.userId })
+    User.findOne({ _id: req.params.userId }) // find one user by id... is this the right way 🤨
       .select("-__v")
       .populate({
         path: "friends",
         select: "-__v",
-        match: { _id: req.params.friendId },
+        $match: { _id: req.params.friendId },
       })
       .then((user) =>
         !user
-          ? res.status(404).json({ message: "No user found with this id!" })
+          ? res.status(404).json({"error" : err.name + ": " + err.message})
           : res.json(user)
       )
       .catch((err) => {
@@ -170,13 +173,13 @@ module.exports = {
     console.log("You are adding a friend!");
     console.log(req.body);
     User.findOneAndUpdate(
-      { _id: req.params.userId },
-      { $addToSet: { friends: req.body } },
-      { runValidators: true, new: true }
+      { _id: req.params.userId }, // find one user by id
+      { $addToSet: { friends: ObjectId(req.friends.params.id) } }, // add the body of the request to the friends array
+      { runValidators: true, new: true } // run validators and return the new user
     )
       .then((user) =>
         !user
-          ? res.status(404).json({ message: "No user found with this id!" })
+          ? res.status(404).json({"error" : err.name + ": " + err.message})
           : res.json(user)
       )
       .catch((err) => {
@@ -186,18 +189,18 @@ module.exports = {
   },
   deleteFriend(req, res) {
     User.findOneAndUpdate(
-      { _id: req.params.userId },
-      { $pull: { friends: { _id: req.params.friendId } } },
-      { runValidators: true, new: true }
+      { _id: req.params.userId }, // find one user by id
+      { $pull: { friends: { _id: req.params.friendId } } }, // this is not working 🤨
+      { runValidators: true, new: true } // run validators and return the new user
     )
       .then((user) =>
         !user
-          ? res.status(404).json({ message: "No user found with this id!" })
+          ? res.status(404).json({"error" : err.name + ": " + err.message})
           : res.json(user)
       )
       .catch((err) => {
         console.log(err);
-        res.status(400).json(err);
+        res.status(500).json({"error" : err.name + ": " + err.message});
       });
   },
 };

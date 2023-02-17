@@ -65,27 +65,36 @@ const getRandomName = () =>
   `${getRandomArrItem(names)} ${getRandomArrItem(names)}`;
 
 const getRandomThoughtDescription = (int) => {
-  let description = "";
-  for (let i = 0; i < int; i++) {
-    description += `${getRandomArrItem(thoughtDescriptions)} `;
+ let results = [];
+ for(let i = 0; i < int; i++) {
+    results.push({
+      thoughtText: getRandomArrItem(thoughtDescriptions),
+      username: getRandomName(),
+      reactions: [...getThoughtReactions(3)],
+    });
   }
-  return description;
+  return results;
 };
 
-const getRandomReactionDescription = (int) => {
-  let description = "";
-  for (let i = 0; i < int; i++) {
-    description += `${getRandomArrItem(reactionDescriptions)} `;
+
+const getThoughtReactions = (int) => {
+ if (int === 1) {
+    return getRandomArrItem(reactionDescriptions);
   }
-  return description;
+  let results = [];
+  for (let i = 0; i < int; i++) {
+    results.push({
+      reactionBody: getRandomArrItem(reactionDescriptions),
+      username: getRandomName(),
+    });
+  }
+  return results;
 };
 
-const getRandomUser = (users) => getRandomArrItem(users);
 
 module.exports = {
   getRandomName,
   getRandomThoughtDescription,
-  getRandomReactionDescription,
-  getRandomUser,
+  getThoughtReactions,
   getRandomArrItem,
 };

@@ -8,7 +8,8 @@
     "start": "node index",
     "dev": "nodemon index",
     "seed": "node utils/seed",
-    "heroku-postbuild": "node utils/seed.js"
+    "heroku-postbuild": "node utils/seed.js",
+    "development": "nodemon"
   },
   "repository": {
     "type": "git",
@@ -22,7 +23,9 @@
   },
   "homepage": "https://github.com/lesley-byte/social-byte#readme",
   "dependencies": {
+    "clog": "^0.1.6",
     "express": "^4.18.2",
+    "lodash": "^4.17.21",
     "mongoose": "^6.9.1"
   },
   "devDependencies": {

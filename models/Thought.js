@@ -7,18 +7,19 @@ const dateFormat = require('../utils/dateFormat');
 const reactionSchema = new Schema(
     {
         // set custom id to avoid confusion with parent thought _id
-        // reactionId: {
-        //     type: Schema.Types.ObjectId,
-        //     default: () => new Types.ObjectId()
-        // },
+        reactionId: {
+            type: Schema.Types.ObjectId,
+            default: () => new Types.ObjectId()
+        },
         reactionBody: {
             type: String,
             required: 'Reaction is required',
             maxlength: 280
         },
-        username: {
-            type: String,
-            required: 'Username is required'
+        userId: {
+            type: Schema.Types.ObjectId,
+            required: 'User ID is required',
+            ref: 'User'
         },
         createdAt: {
             type: Date,
@@ -47,9 +48,11 @@ const thoughtSchema = new Schema(
             default: Date.now,
             get: createdAtVal => dateFormat(createdAtVal)
         },
-        username: {
-            type: String,
-            required: 'Username is required'
+        userId: {
+            type: Schema.Types.ObjectId,
+            required: 'User ID is required',
+            ref: 'User'
+            
         },
         // reaction will be a subdocument in the Thought model
         reactions: [reactionSchema]

@@ -1,6 +1,7 @@
 const express = require('express');
 const db = require('./config/connection');
 const routes = require('./routes');
+const { clog } = require('./middleware/clog');
 
 const cwd = process.cwd();
 
@@ -12,6 +13,8 @@ const activity = cwd.includes('01-Activities')
   ? cwd.split('/01-Activities/')[1]
   : cwd;
 
+
+app.use(clog);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(routes);

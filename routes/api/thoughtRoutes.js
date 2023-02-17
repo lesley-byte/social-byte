@@ -22,7 +22,10 @@ router
   .delete(deleteThought);
 
 // /api/thoughts/:thoughtId/reactions
-router.route("/:thoughtId/reactions").get(getAllReactions);
+router
+.route("/:thoughtId/reactions")
+.get(getAllReactions)
+.post(createReaction);
 
 // /api/thoughts/:thoughtId/reactions/:reactionId
 router
@@ -30,9 +33,5 @@ router
   .get(getReactionById)
   .delete(deleteReaction);
 
-// /api/thoughts/:thoughtId/reactions
-router
-.route("/:thoughtId/reactions")
-.post(createReaction);
 
 module.exports = router;
