@@ -8,13 +8,15 @@ const thoughtCount = async () =>
 // TODO: finish this
 module.exports = {
   getAllUsers(req, res) {
-    User.find({})  // find all users
+    User.find({}) // find all users
       .then(async (users) => {
         console.log(users);
         // for all users console.log the _id: new ObjectId and username
         users.forEach((user) => {
-// use ObjectId to convert the _id to a string
-          console.log(`_id: ${new ObjectId(user._id)}, username: ${user.username}`);
+          // use ObjectId to convert the _id to a string
+          console.log(
+            `_id: ${new ObjectId(user._id)}, username: ${user.username}`
+          );
         });
         const userObj = {
           users,
@@ -27,11 +29,11 @@ module.exports = {
       });
   },
   getUserById(req, res) {
-    User.findOne({ _id: req.params.userId })  // find one user by id
+    User.findOne({ _id: req.params.userId }) // find one user by id
       .select("-__v")
       .then(async (user) =>
         !user
-          ? res.status(404).json({"error" : err.name + ": " + err.message})
+          ? res.status(404).json({ error: err.name + ": " + err.message })
           : res.json({
               user,
             })
@@ -53,7 +55,7 @@ module.exports = {
     User.findOneAndRemove({ _id: req.params.userId }) // find one user by id and remove
       .then((user) =>
         !user
-          ? res.status(404).json({"error" : err.name + ": " + err.message})
+          ? res.status(404).json({ error: err.name + ": " + err.message })
           : Thought.deleteMany({ _id: { $in: user.thoughts } })
       )
       .then(() => res.json({ message: "User deleted!" }))
@@ -64,17 +66,17 @@ module.exports = {
   },
   updateUser(req, res) {
     User.findOneAndUpdate(
-      { _id: req.params.userId },  // find one user by id
+      { _id: req.params.userId }, // find one user by id
       { $set: req.body }, // set the body of the request
-      { runValidators: true, new: true }  // run validators and return the new user
+      { runValidators: true, new: true } // run validators and return the new user
     )
       .then((user) =>
         !user
-          ? res.status(404).json({"error" : err.name + ": " + err.message})
+          ? res.status(404).json({ error: err.name + ": " + err.message })
           : res.json(user)
       )
       .catch((err) => {
-        res.status(400).json({"error" : err.name + ": " + err.message});
+        res.status(400).json({ error: err.name + ": " + err.message });
         console.log(err);
       });
   },
@@ -83,12 +85,12 @@ module.exports = {
     console.log(req.body);
     User.findOneAndUpdate(
       { _id: req.params.userId }, // find one user by id
-      { $addToSet: { thoughts: req.body } },  // add the body of the request to the thoughts array
+      { $addToSet: { thoughts: req.body } }, // add the body of the request to the thoughts array
       { runValidators: true, new: true } // run validators and return the new user
     )
       .then((user) =>
         !user
-          ? res.status(404).json({"error" : err.name + ": " + err.message})
+          ? res.status(404).json({ error: err.name + ": " + err.message })
           : res.json(user)
       )
       .catch((err) => {
@@ -104,12 +106,12 @@ module.exports = {
     )
       .then((user) =>
         !user
-          ? res.status(404).json({"error" : err.name + ": " + err.message})
+          ? res.status(404).json({ error: err.name + ": " + err.message })
           : res.json(user)
       )
       .catch((err) => {
         console.log(err);
-        res.status(400).json({"error" : err.name + ": " + err.message});
+        res.status(400).json({ error: err.name + ": " + err.message });
       });
   },
   getAllFriends(req, res) {
@@ -123,7 +125,7 @@ module.exports = {
       // : Thought.deleteMany({ _id: { $in: user.thoughts } })
       .then((user) =>
         !user
-          ? res.status(404).json({"error" : err.name + ": " + err.message})
+          ? res.status(404).json({ error: err.name + ": " + err.message })
           : res.json(user)
       )
       .catch((err) => {
@@ -141,7 +143,7 @@ module.exports = {
       })
       .then((user) =>
         !user
-          ? res.status(404).json({"error" : err.name + ": " + err.message})
+          ? res.status(404).json({ error: err.name + ": " + err.message })
           : res.json(user)
       )
       .catch((err) => {
@@ -152,15 +154,15 @@ module.exports = {
 
   createFriend(req, res) {
     console.log("You are adding a friend!");
-    console.log(req.body);
+    console.log(req.body.friends);
     User.findOneAndUpdate(
       { _id: req.params.userId }, // find one user by id
-      { $addToSet: { friends: ObjectId(req.params.friendId) } }, // add the body of the request to the friends array
+      { $addToSet: { friends: req.body.friends } }, // add the body of the request to the friends array
       { runValidators: true, new: true } // run validators and return the new user
     )
       .then((user) =>
         !user
-          ? res.status(404).json({"error" : err.name + ": " + err.message})
+          ? res.status(404).json({ error: err.name + ": " + err.message })
           : res.json(user)
       )
       .catch((err) => {
@@ -171,19 +173,19 @@ module.exports = {
   deleteFriend(req, res) {
     User.findOneAndUpdate(
       { _id: req.params.userId }, // find one user by id
-      { $pull: { friends: { $in: req.params.friendId } }}, // pull the friend by id from the friends array
+      { $pull: { friends: { $in: req.params.friendId } } }, // pull the friend by id from the friends array
       { runValidators: true, new: true } // run validators and return the new user
     )
       .then((user) =>
         !user
-          ? res.status(404).json({"error" : err.name + ": " + err.message})
+          ? res.status(404).json({ error: err.name + ": " + err.message })
           : !user.friends
-          ? res.status(404).json({"error" : err.name + ": " + err.message})
+          ? res.status(404).json({ error: err.name + ": " + err.message })
           : res.json(user)
       )
       .catch((err) => {
         console.log(err);
-        res.status(500).json({"error" : err.name + ": " + err.message});
+        res.status(500).json({ error: err.name + ": " + err.message });
       });
   },
 };
