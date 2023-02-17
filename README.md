@@ -17,7 +17,7 @@ npm start
 ```
 
 ## Video of Usage
-[![Video of Usage](https://youtu.be/TMceUQCVsAY)
+[![Video of Usage](https://www.youtube.com/watch?v=hrFrqVFQ1yU)
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
