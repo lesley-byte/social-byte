@@ -137,7 +137,7 @@ module.exports = {
       .populate({
         path: "friends",
         select: "-__v",
-        $match: { _id: req.params.friendId },
+        $match: { _id: ObjectId(req.params.friendId) },
       })
       .then((user) =>
         !user
@@ -171,11 +171,13 @@ module.exports = {
   deleteFriend(req, res) {
     User.findOneAndUpdate(
       { _id: req.params.userId }, // find one user by id
-      { $pull: { friends: { _id: new ObjectId(req.params.friendId) } } }, // this is not working 🤨
+      { $pull: { friends: { $in: req.params.friendId } }}, // pull the friend by id from the friends array
       { runValidators: true, new: true } // run validators and return the new user
     )
       .then((user) =>
         !user
+          ? res.status(404).json({"error" : err.name + ": " + err.message})
+          : !user.friends
           ? res.status(404).json({"error" : err.name + ": " + err.message})
           : res.json(user)
       )

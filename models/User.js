@@ -25,7 +25,7 @@ const userSchema = new Schema(
     friends: [
       {
         // needs to be an array of the user ids that have already been created
-        type: Schema.Types.ObjectId,
+        type: "ObjectId",
         ref: "User",
       },
     ],
@@ -38,7 +38,6 @@ const userSchema = new Schema(
     id: false,
   }
 );
-
 
 // create the User model using the UserSchema
 const User = model("User", userSchema);
