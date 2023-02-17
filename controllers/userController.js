@@ -1,27 +1,10 @@
 const { ObjectId } = require("mongoose").Types;
 const { Thought, User } = require("../models");
 
-//Aggregate function to get the number of users overall
-// const userCount = async () =>
-//   User.aggregate()
-//     .count("userCount")
-//     .then((numberofUsers) => numberofUsers);
-
 const thoughtCount = async () =>
   Thought.aggregate()
     .count("thoughtCount")
     .then((numberofThoughts) => numberofThoughts);
-
-// const friendCount = async () =>
-//   User.aggregate()
-//     .unwind("friends")
-//     .group({ _id: null, friendCount: { $sum: 1 } })
-//     .then((numberofFriends) => numberofFriends)
-//     .catch((err) => {
-//       console.log(err);
-//       res.status(400).json(err);
-//     });
-    
 // TODO: finish this
 module.exports = {
   getAllUsers(req, res) {
@@ -51,8 +34,6 @@ module.exports = {
           ? res.status(404).json({"error" : err.name + ": " + err.message})
           : res.json({
               user,
-              // friendCount: await friendCount(req.params.userId),
-              // thoughtCount: await thoughtCount(req.params.userId),
             })
       )
       .catch((err) => {
@@ -174,7 +155,7 @@ module.exports = {
     console.log(req.body);
     User.findOneAndUpdate(
       { _id: req.params.userId }, // find one user by id
-      { $addToSet: { friends: ObjectId(req.friends.params.id) } }, // add the body of the request to the friends array
+      { $addToSet: { friends: ObjectId(req.params.friendId) } }, // add the body of the request to the friends array
       { runValidators: true, new: true } // run validators and return the new user
     )
       .then((user) =>
@@ -190,7 +171,7 @@ module.exports = {
   deleteFriend(req, res) {
     User.findOneAndUpdate(
       { _id: req.params.userId }, // find one user by id
-      { $pull: { friends: { _id: req.params.friendId } } }, // this is not working 🤨
+      { $pull: { friends: { _id: new ObjectId(req.params.friendId) } } }, // this is not working 🤨
       { runValidators: true, new: true } // run validators and return the new user
     )
       .then((user) =>

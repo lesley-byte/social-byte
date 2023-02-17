@@ -2,22 +2,12 @@
 const { ObjectId } = require("mongoose").Types;
 const { Thought, User } = require("../models");
 
-//Aggregate function to get the number of users overall
-const userCount = async () =>
-  User.aggregate()
-    .count("userCount")
-    .then((numberofUsers) => numberofUsers);
+//Aggregate function to get the number of thoughts
 
 const thoughtCount = async () =>
   Thought.aggregate()
     .count("thoughtCount")
     .then((numberofThoughts) => numberofThoughts);
-
-// const friendCount = async () =>
-//   User.aggregate()
-//     .unwind("friends")
-//     .group({ _id: null, friendCount: { $sum: 1 } })
-//     .then((numberofFriends) => numberofFriends);
 
 module.exports = {
   // get all thoughts
@@ -44,8 +34,6 @@ module.exports = {
           ? res.status(404).json({"error" : err.name + ": " + err.message})
           : res.json({
               thought,
-              // friendCount: await friendCount(req.params.thoughtId),
-              // thoughtCount: await thoughtCount(req.params.thoughtId),
             })
       )
       .catch((err) => {
@@ -133,9 +121,6 @@ module.exports = {
         res.status(400).json({"error" : err.name + ": " + err.message})
       });
   },
-
-
-
   // create reaction
   createReaction(req, res) {
     Thought.findOneAndUpdate(
