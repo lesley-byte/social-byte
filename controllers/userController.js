@@ -33,7 +33,7 @@ module.exports = {
       .select("-__v")
       .then(async (user) =>
         !user
-          ? res.status(404).json({ error: err.name + ": " + err.message })
+          ? res.status(404).json({ message : "No user found with this id" })
           : res.json({
               user,
             })
@@ -55,7 +55,7 @@ module.exports = {
     User.findOneAndRemove({ _id: req.params.userId }) // find one user by id and remove
       .then((user) =>
         !user
-          ? res.status(404).json({ error: err.name + ": " + err.message })
+          ? res.status(404).json({ message : "No user found with this id" })
           : Thought.deleteMany({ _id: { $in: user.thoughts } })
       )
       .then(() => res.json({ message: "User deleted!" }))
@@ -72,7 +72,7 @@ module.exports = {
     )
       .then((user) =>
         !user
-          ? res.status(404).json({ error: err.name + ": " + err.message })
+          ? res.status(404).json({ message : "No user found with this id" })
           : res.json(user)
       )
       .catch((err) => {
@@ -90,7 +90,7 @@ module.exports = {
     )
       .then((user) =>
         !user
-          ? res.status(404).json({ error: err.name + ": " + err.message })
+          ? res.status(404).json({ message: "No user found with this id" })
           : res.json(user)
       )
       .catch((err) => {
@@ -106,7 +106,7 @@ module.exports = {
     )
       .then((user) =>
         !user
-          ? res.status(404).json({ error: err.name + ": " + err.message })
+          ? res.status(404).json({ message: "No user found with this id" })
           : res.json(user)
       )
       .catch((err) => {
@@ -125,7 +125,7 @@ module.exports = {
       // : Thought.deleteMany({ _id: { $in: user.thoughts } })
       .then((user) =>
         !user
-          ? res.status(404).json({ error: err.name + ": " + err.message })
+          ? res.status(404).json({ message: "No user found with this id!" })
           : res.json(user)
       )
       .catch((err) => {
@@ -143,7 +143,7 @@ module.exports = {
       })
       .then((user) =>
         !user
-          ? res.status(404).json({ error: err.name + ": " + err.message })
+          ? res.status(404).json({ message: "No user found with this id!" })
           : res.json(user)
       )
       .catch((err) => {
@@ -162,7 +162,7 @@ module.exports = {
     )
       .then((user) =>
         !user
-          ? res.status(404).json({ error: err.name + ": " + err.message })
+          ? res.status(404).json({ message: "No user found with this id" })
           : res.json(user)
       )
       .catch((err) => {
@@ -178,9 +178,9 @@ module.exports = {
     )
       .then((user) =>
         !user
-          ? res.status(404).json({ error: err.name + ": " + err.message })
+          ? res.status(404).json({ message: "No user found with this id" })
           : !user.friends
-          ? res.status(404).json({ error: err.name + ": " + err.message })
+          ? res.status(404).json({ message: "No friend found with this id" })
           : res.json(user)
       )
       .catch((err) => {
